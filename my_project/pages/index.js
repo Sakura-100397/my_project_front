@@ -4,7 +4,11 @@ import { useEffect, useState } from 'react';
 import {  useEmployeeContext } from '../context/EmployeeContext';
 
 export default function Home() {
-  const { employees } = useEmployeeContext();
+  const { employees, setEmployees } = useEmployeeContext();
+
+  useEffect(() => {
+    console.log('現在の社員情報:', employees); 
+  }, [employees]); 
   const router = useRouter();
 
   const clickHandler = () => {  
@@ -15,6 +19,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchEmployees = async () => {
+      console.log('社員情報を取得中...');
       try {
         const response = await fetch('http://localhost:5000/employees');
         
@@ -23,7 +28,9 @@ export default function Home() {
         }
 
         const data = await response.json();
+        console.log("取得した社員データ:", data); 
         setEmployees(data);  
+        console.log('社員情報をセット後:', data);
       } catch (err) {
         setError(err.message);  
       }
@@ -31,6 +38,10 @@ export default function Home() {
 
     fetchEmployees();
   }, []); 
+
+  useEffect(() => {
+    console.log('Employees:', employees);
+  }, [employees]);
 
   return(
     <div>
