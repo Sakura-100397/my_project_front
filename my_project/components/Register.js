@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useEmployeeContext } from "../context/EmployeeContext";
 import useValidation from "./useValidation.mjs";
 import RegisterForm from "@/app/components/RegisterForm.mjs";
@@ -12,17 +12,13 @@ export default function Register() {
     const { addEmployee } = useEmployeeContext();
     const { error: validationError, validate } = useValidation();
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const handleSubmit = async (formData) => {
 
-        const formData = new FormData(event.target);
-        const data = Object.fromEntries(formData.entries());
-
-        if (!validate(data.name, data.address, data.mail, data.phone_number, data.position, data.password)) {
+        if (!validate(formData.name, formData.address, formData.mail, formData.phone_number, formData.position, formData.password)) {
             setError(validationError); 
             return;
         }
-
+    
         try {
             const res = await fetch("/employees/register", {
                 method: "POST",
@@ -31,18 +27,30 @@ export default function Register() {
                 },
                 body: JSON.stringify(data),
             });
-
+    
             if (!res.ok) {
                 throw new Error("登録に失敗しました");
             }
-
-            addEmployee(employee);
+    
+    
+            const newEmployee = await res.json();
+            console.log(newEmployee);
+            if (newEmployee) {
+                addEmployee(newEmployee);
+            } else {
+                throw new Error("無効な社員データ");
+            }
+    
             router.push("/"); 
+    
         } catch (err) {
             setError("ネットワークエラーが発生しました");
             console.error(err);
         }
     };
-
-    return <RegisterForm onSubmit={handleSubmit} errorMessage={error} />;
+    
+    return <RegisterForm    
+                onSubmit={handleSubmit}     
+                errorMessage={error}    
+            />;
 }
