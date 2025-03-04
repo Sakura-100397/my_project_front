@@ -1,10 +1,14 @@
 "use client";
 import { useRouter } from 'next/router';
 
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const router = useRouter();
+  const clickHandler = () => {  
+    router.push('/employees/register');
+  };
+
   const [employees, setEmployees] = useState([]);
   const [error, setError] = useState(null);
 
@@ -37,7 +41,7 @@ export default function Home() {
           </li>
         ))}
         </ul>
-        <button onClick = {navigateToRegistration}>新規登録</button>
+        <button onClick = {clickHandler}>新規登録</button>
     </div>
   );
 }
