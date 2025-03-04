@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEmployeeContext } from "../context/EmployeeContext";
 import useValidation from "./useValidation.mjs";
 import RegisterForm from "@/app/components/RegisterForm.mjs";
 
 export default function Register() {
     const [error, setError] = useState("");
     const router = useRouter();
+    const { addEmployee } = useEmployeeContext();
     const { error: validationError, validate } = useValidation();
 
     const handleSubmit = async (event) => {
@@ -34,6 +36,7 @@ export default function Register() {
                 throw new Error("登録に失敗しました");
             }
 
+            addEmployee(employee);
             router.push("/"); 
         } catch (err) {
             setError("ネットワークエラーが発生しました");

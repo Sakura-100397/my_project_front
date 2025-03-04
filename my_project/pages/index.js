@@ -1,15 +1,16 @@
 "use client";
 import { useRouter } from 'next/router';
-
 import { useEffect, useState } from 'react';
+import {  useEmployeeContext } from '../context/EmployeeContext';
 
 export default function Home() {
+  const { employees } = useEmployeeContext();
   const router = useRouter();
+
   const clickHandler = () => {  
     router.push('/employees/register');
   };
 
-  const [employees, setEmployees] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -33,15 +34,19 @@ export default function Home() {
 
   return(
     <div>
-      <h1>社員情報管理システム</h1>
-      <p>社員一覧を表示</p>
-      <ul>
-        {employees.map((employee) => (
-          <li key={employee.id}>{employee.name} - {employee.position} 
-          </li>
-        ))}
+      <h1>社員情報一覧</h1>
+      {employees.length === 0 ? (
+        <p>社員情報はありません</p>
+      ) : (
+        <ul>
+          {employees.map(employee => (
+            <li key={employee.id}>
+              {employee.name} - {employee.position}
+            </li>
+          ))}
         </ul>
-        <button onClick = {clickHandler}>新規登録</button>
+      )}
+      <button onClick={clickHandler}>新規登録</button>
     </div>
   );
 }
