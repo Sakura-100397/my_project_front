@@ -12,7 +12,12 @@ const RegisterForm = ({ onSubmit, errorMessage}) => {
 
     const handleSubmit = (e) => {   
         e.preventDefault();
-        onSubmit(name, address, mail, phone_number, position, password);
+        if (typeof onSubmit === "function") {  
+            onSubmit(name, address, mail, phone_number, position, password);
+        }else{  
+            console.error("onSubmit is not a function")
+        }
+       
     };
 
     return (    
@@ -68,6 +73,9 @@ const RegisterForm = ({ onSubmit, errorMessage}) => {
              onChange={(e) => setPassword ( e.target.value)}
              />       
         </div>
+
+        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+
         <button type= "submit">登録</button>
             </form>
         </div>

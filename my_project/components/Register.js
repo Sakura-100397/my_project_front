@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Validation from "@/components/Validation.mjs";
+import useValidation from "./useValidation.mjs";
 import RegisterForm from "@/app/components/RegisterForm.mjs";
 
 export default function Register() {
