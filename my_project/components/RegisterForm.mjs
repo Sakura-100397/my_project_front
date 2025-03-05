@@ -1,67 +1,86 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import axios from 'axios';
 import useValidation from "./useValidation.mjs";
 import { useEmployeeContext } from "../context/EmployeeContext";
 
 const RegisterForm = () => {
+    const {  error:validationError, validate } = useValidation();
+    const router = useRouter();
+
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
     const [mail, setMail] = useState("");
     const [phone_number, setPhoneNumber] = useState("");
     const [position, setPosition] = useState("");
     const [password, setPassword] = useState("");
-    const [errorMessage, setErrorMessage] = useState(""); 
+
+    const [errors, setErrors] = useState([]);
+
     const { addEmployee } = useEmployeeContext();
-    const { error: validationError, validate } = useValidation();
-    const router = useRouter();
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formData = { name, address, mail, phone_number, position, password };
 
-        if (!validate(formData.name, formData.address, formData.mail, formData.phone_number, formData.position, formData.password)) {
-            setErrorMessage(validationError);
-            return;
+        let formErrors = [];
+        if (!name) formErrors.push("名前を入力してください");
+        if (!address) formErrors.push("住所を入力してください");
+        if (!mail) formErrors.push("メールアドレスを入力してください");
+        if (!phone_number) formErrors.push("携帯番号を入力してください");
+        if (!position) formErrors.push("役職を入力してください");
+        if (!password) formErrors.push("パスワードを入力してください");
+
+        if (formErrors.length > 0) {
+            setErrors(formErrors);
+            return; 
         }
 
         try {
-            const res = await fetch("http://localhost:5000/employees/register", {
-                method: "POST",
-                headers: {
+            const res = await axios.post("http://localhost:5000/api/employees/register", formData, {
+                headers: {  
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData),
             });
-            const text = await res.text();
-            console.log("レスポンス",text);
 
-            if (!res.ok) {
-                throw new Error("登録に失敗しました");
-            }
-            const resJson = JSON.parse(text);
-            console.log('登録されたでーた',resJson); 
-            const newEmployee = resJson;
+            const data = res.data;
 
-            if (newEmployee && newEmployee.id) {
-                addEmployee(newEmployee);
+            if (res.status === 200 && data.message) {
+                router.push("/");  
             } else {
-                throw new Error("無効な社員データ");
+                setErrors(data.errors);
             }
 
-            router.push("/"); 
+        } catch (error) {
+            if (error.response && error.response.data) {
+                console.error("サーバーからのエラー:", error.response.data);  // エラーレスポンスをログ出力
+                setErrors(error.response.data.errors || ["サーバーエラーが発生しました"]);
+            } else {
+                setErrors(["サーバーエラーが発生しました"]);
+            }
+    }
+};
 
-        } catch (err) {
-            setErrorMessage("ネットワークエラーが発生しました");
-            console.error("エラー", err);
-        }
-    };
+
 
     return (
         <div>
             <h1>社員登録</h1>
-            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>} {/* エラーメッセージの表示 */}
+        <div>
+         {errors && errors.length > 0 && (
+            <div>
+             {errors.map((error, index) => (
+             <p key={index}>
+               {error.msg} 
+             </p>
+            ))}
+             </div>
+          )}
+         </div>
+                
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>名前：</label>
@@ -113,7 +132,7 @@ const RegisterForm = () => {
                 </div>
                 <button type="submit">登録</button>
             </form>
-        </div>
+    </div>
     );
 };
 

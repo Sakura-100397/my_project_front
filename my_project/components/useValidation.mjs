@@ -1,18 +1,20 @@
 import { useState } from 'react';
 
 const useValidation = () => {   
-const [ error, setError ] = useState("");
+const [ errors, setErrors ] = useState("");
 
 const validate = ( name, address, mail, phone_number, position, password ) => { 
-    if (!name || !address || !mail || !phone_number || !position|| !password ){ 
-        setError("すべて入力してください");
+    let newErrors = [];
+
+    if (!name || !address || !mail  || !phone_number || !position || !password ){ 
+        setErrors(["すべて入力してください"]);
         return false;
     }
-    setError("");
+    setErrors([]);
     return true;
 };
 
-return { error, validate };
+return { errors, setErrors, validate };
 
 };
 

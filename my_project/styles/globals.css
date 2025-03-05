@@ -9,6 +9,16 @@ h1 {
   color: #333;
 }
 
+form div {
+  margin-bottom: 15px;
+}
+
+p {
+  font-size: 12px;
+  color: red;
+  margin-top: 5px;
+}
+
 button {
   padding: 10px 15px;
   background-color: #0070f3;

@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
 import { useRouter} from 'next/router';
+import Link from "next/link";
 
 const EmployeeDetail = () =>   {    
     const [ employee, setEmployee] = useState(null);
+    const [ error , setError ] = useState(null);
     const router = useRouter();
     const { id } = router.query;
 
 
     useEffect(() => {  
-        if (employee && employee.id) {
-          async function fetchEmployee() {
-            try {
-                const res = await fetch(`http://localhost:5000/employees/${employee.id}`);
-      
-              if (!res.ok) {
+        if (!id) return;
+
+        const fetchEmployee = async () => { 
+          try{  
+
+          const res = await fetch(`http://localhost:5000/api/employees/${id}`);
+
+            if (!res.ok) {
                 throw new Error(`Error: ${res.status} ${res.statusText}`);
               }
       
@@ -22,18 +26,19 @@ const EmployeeDetail = () =>   {
               setEmployee(data);
             } catch (error) {
               console.error('Error fetching employee details:', error);
+              setError('社員情報の取得に失敗しました。')
             }
-          }
+          };
       
           fetchEmployee();
         }
-      }, [employee]); 
+      , [id]); 
       
         
 
-    if (!employee) {    
-        return <p>Loading...</p>; 
-    }
+    if (error) return <p>{error}</p>; 
+    if (!employee) return <p>社員情報が見つかりません。</p>; 
+
     return (    
         <div>   
             <h1>{employee.name} さんの詳細情報</h1>
@@ -45,7 +50,7 @@ const EmployeeDetail = () =>   {
             <p>役職： {employee.position}</p>
             <p>パスワード： {employee.password}</p>
 
-            <Link href = '/employees'>  
+            <Link href = '/'>  
             <a>一覧ページに戻る</a>
             </Link>
             
