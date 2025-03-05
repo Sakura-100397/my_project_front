@@ -3,13 +3,25 @@ body {
   font-family: Arial, sans-serif;
   padding: 20px;
   background-color: #c3c9d0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
+
+
 
 h1 {
   color: #333;
 }
 
 form div {
+  margin-bottom: 25px;
+}
+
+li{ 
   margin-bottom: 15px;
 }
 
@@ -25,6 +37,8 @@ button {
   color: white;
   border: none;
   cursor: pointer;
+  width: 100%;
+  border-radius: 15px;
 }
 
 button:hover {
