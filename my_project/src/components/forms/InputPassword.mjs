@@ -9,9 +9,7 @@ const InputPassword = ({ register, errors}) => {
             minLength: {value: 8, message: "パスワードは8文字以上で入力してください。"}
           })} />
 
-          {errors.password && ( 
-            <div className="error-msg">{errors.password.message}</div>
-          )}
+          {errors.password && <div className="error-msg">{errors.password.message}</div>}
         </div>
     );
 };

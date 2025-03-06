@@ -41,7 +41,7 @@ const EmployeeDetail = () =>   {
 
     return (    
         <div>   
-            <h1>{employee.name} さんの詳細情報</h1>
+            <h1>{employee.employeeName} さんの詳細情報</h1>
             <p>ID：{employee.id}</p>
             <p>名前： {employee.name}</p>
             <p>住所： {employee.address}</p>

@@ -1,4 +1,4 @@
-export { default as InputEmployeeName } from "./InputName.mjs";
+export { default as InputEmployeeName } from "./InputEmployeeName.mjs";
 export { default as InputAddress } from "./InputAddress.mjs";
 export { default as InputMail } from "./InputMail.mjs";
 export { default as InputPhonenumber } from "./InputPhonenumber.mjs";

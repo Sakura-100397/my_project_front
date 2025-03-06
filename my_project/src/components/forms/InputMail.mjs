@@ -9,9 +9,7 @@ const InputMail = ({ register, errors}) => {
             pattern:{ value:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: "有効なメールアドレスを入力してください。"}  
           })} />
 
-          {errors.mail && ( 
-            <div className="error-msg">{errors.mail.message}</div>
-          )}
+        {errors.mail && <div className="error-msg">{errors.mail.message}</div>}
         </div>
     );
 };

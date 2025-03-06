@@ -28,14 +28,14 @@ const clickHandler = () => {
   <div className="container">
     <h1>▶社員情報一覧</h1>
     {error && <div className="error-msg text-center">{error}</div>}
-     {employeeList.length === 0 ? (
-    <p>社員情報はありません</p>
+     {employees.length === 0 ? (
+    <p>表示する情報がありません</p>
   ) : (
     <ul>
-      {employeeList.map(employee => (
+      {employees.map(employee => (
         <li key={employee.id}>
           <Link href = {`/employees/${employee.id}`}> 
-            <a>{employee.name} - {employee.position}</a>
+            <a>{employee.employeeName} - {employee.position}</a>
           </Link>
         </li>
       ))}

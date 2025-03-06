@@ -6,9 +6,7 @@ const InputAddress = ({ register, errors}) => {
               id= "address"  type="text" className="input-address" 
           {...register("address", { required: "住所を入力してください。"})} />
 
-          {errors.address && ( 
-            <div className="error-msg">{errors.address.message}</div>
-          )}
+          {errors.address && <div className="error-msg">{errors.address.message}</div>}   
         </div>
     );
 };
