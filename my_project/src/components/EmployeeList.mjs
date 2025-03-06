@@ -20,9 +20,21 @@ useEffect(() => {
   });
 }, []);
 
+const [isLoading, setIsLoading] = useState(false);
+
 const clickHandler = () => {  
-  router.push('/employees/register');
+  if (!isLoading) {
+    setIsLoading(true);
+    router.push('/employees/register');
+  }
+
+  // router.push('/employees/register');
 };
+useEffect(() => {
+  if (isLoading) {
+    router.push('/employees/register');
+  }
+}, [isLoading]);
 
  return( 
   <div className="container">
