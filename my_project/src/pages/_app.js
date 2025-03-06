@@ -1,5 +1,7 @@
-import '../styles/globals.css'
-import { EmployeeProvider } from '../context/EmployeeContext'
+import '../../styles/global.css';
+
+
+import { EmployeeProvider } from '../context/EmployeeContext';
 
 function MyApp({ Component, pageProps }) {
   return (  
