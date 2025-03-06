@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter} from 'next/router';
-import Link from "next/link";
+
 
 const EmployeeDetail = () =>   {    
     const [ employee, setEmployee] = useState(null);
@@ -33,6 +33,10 @@ const EmployeeDetail = () =>   {
           fetchEmployee();
         }
       , [id]); 
+
+      const clickHandler = () => {  
+        router.push('/');
+      };
       
         
 
@@ -50,9 +54,10 @@ const EmployeeDetail = () =>   {
             <p>役職： {employee.position}</p>
             <p>パスワード： {employee.password}</p>
 
-            <Link href = '/'>  
-            <a>一覧ページに戻る</a>
-            </Link>
+
+            <div>
+            <button onClick={clickHandler}>一覧ページに戻る</button>
+            </div>
             
         </div>
     );
