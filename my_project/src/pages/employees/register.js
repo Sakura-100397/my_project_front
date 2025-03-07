@@ -11,30 +11,36 @@ import {InputEmployeeName, InputAddress, InputMail,InputPhonenumber, InputPositi
 const RegisterPage = () => {
     const dispatch = useDispatchEmployees();
     const router = useRouter();
-    const [errors, setErrors] = useState("");
 
-    const { handleSubmit, formState: { errors: formErrors}, register } = useForm();
 
+    const { handleSubmit, formState: { errors }, register } = useForm({  
+         criteriaMode: "all",
+         mode: "onSubmit",
+         reValidateMode: "onSubmit",    
+        });
+        
+    const [error, setError] = useState("");
      const onSubmit = async (formData) => { 
-        try{    
+        try{  
             const response = await employeeApi.post(formData);
-             
-                if(response && e.status === 200 ){ 
+              
+                if(response.status === 200 ){ 
 
                     dispatch({ type: "employee/add", employee:response.data});
                     await router.push("/"); 
                 }
            
-            }catch(e) {
-                if( e.status === 400){
-                    setErrors("不正な入力値です")
+            }catch(error) {
+                console.log(error)
+                if( error.status === 400){
+                    setError("不正な入力値です")
                 
-                }else if(e.status === 500){    
-                    setErrors("登録に失敗しました")
+                }else if(error.status === 500){    
+                    setError("登録に失敗しました")
                    
                 }else{  
-                    console.error(errors);
-                    setErrors(e.message || "予期しないエラーが発生しました。"); 
+                    console.error(error);
+                    setError(error.message || "予期しないエラーが発生しました。"); 
                 }}
             
             };
@@ -44,14 +50,14 @@ const RegisterPage = () => {
         <div>   
         <h1>社員情報登録</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
-            {errors && <div className="error-msg">{errors}</div>}
+            {errors && <div className="error-msg">{error}</div>}
             
-            <InputEmployeeName register={register} errors={formErrors} />
-            <InputAddress register={register} errors={formErrors} />
-            <InputMail register={register} errors={formErrors} />
-            <InputPhonenumber register={register} errors={formErrors} />
-            <InputPosition register={register} errors={formErrors} />
-            <InputPassword register={register} errors={formErrors} />
+            <InputEmployeeName register={register} errors={errors} />
+            <InputAddress register={register} errors={errors} />
+            <InputMail register={register} errors={errors} />
+            <InputPhonenumber register={register} errors={errors} />
+            <InputPosition register={register} errors={errors} />
+            <InputPassword register={register} errors={errors} />
             
             <button type="submit">登録</button>
         </form>

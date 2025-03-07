@@ -26,13 +26,10 @@ const clickHandler = () => {
   if (!isLoading) {
     setIsLoading(true);
     router.push('/employees/register');
-  }n
-
-  // router.push('/employees/register');
+  }
 };
 useEffect(() => {
   if (isLoading) {
-    router.push('/employees/register');
   }
 }, [isLoading]);
 

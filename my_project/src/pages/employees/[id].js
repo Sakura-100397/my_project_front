@@ -13,20 +13,22 @@ const EmployeeDetail = () =>   {
         if (!id) return;
 
         const fetchEmployee = async () => { 
-          try{  
-
+     
           const res = await fetch(`http://localhost:5000/api/employees/${id}`);
 
-            if (!res.ok) {
-                throw new Error(`Error: ${res.status} ${res.statusText}`);
-              }
+          try{  
+           if(res.status === 404 ){  
+              setError("社員情報が見つかりません")
+            }else if (res.status === 500 ){ 
+              setError("サーバーエラーが発生しました")
+            }else if (!res.ok){ 
+              throw new Error(`Error: ${res.status} ${res.statusText}`)
+            }
       
               const data = await res.json();
-              console.log('Fetched Employee Data:', data);
               setEmployee(data);
             } catch (error) {
-              console.error('Error fetching employee details:', error);
-              setError('社員情報の取得に失敗しました。')
+              console.log("ステータス：", error.message);
             }
           };
       
@@ -48,7 +50,7 @@ const EmployeeDetail = () =>   {
         <div>   
             <h1>{employee.employeeName} さんの詳細情報</h1>
             <p>ID：{employee.id}</p>
-            <p>名前： {employee.name}</p>
+            <p>名前： {employee.employeeName}</p>
             <p>住所： {employee.address}</p>
             <p>メールアドレス：{employee.mail}</p>
             <p>携帯番号： {employee.phone_number}</p>
