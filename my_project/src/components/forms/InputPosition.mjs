@@ -6,7 +6,7 @@ const InputPosition = ({ register, errors}) => {
               id= "position" type="text" className="input-position" 
           {...register("position",  
            { required: "役職を入力してください。",  
-            pattern:{ value:/^[a-zA-Zぁ-んァ-ン\s]+$/, message: "役職は文字列のみで入力してください。"}
+            pattern:{ value:/^[\u4e00-\u9fafa-zA-Zぁ-んァ-ヶ々〆〤\s]+$/, message: "役職は文字列のみで入力してください。"}  
            })} />
 
           {errors.position && <div className="error-msg">{errors.position.message}</div>}

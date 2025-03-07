@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
 import employeeApi from "../../api/employee.mjs";
-import { useDispatchEmployees, useEmployeeContext,EmployeeProvider } from "../../context/EmployeeContext";
+import { useDispatchEmployees } from "../../context/EmployeeContext";
 import {InputEmployeeName, InputAddress, InputMail,InputPhonenumber, InputPosition, InputPassword} from "../../components/forms";
 
 
@@ -18,32 +18,33 @@ const RegisterPage = () => {
      const onSubmit = async (formData) => { 
         try{    
             const response = await employeeApi.post(formData);
-
-                if(response && response.status === 200 ){ 
+             
+                if(response && e.status === 200 ){ 
 
                     dispatch({ type: "employee/add", employee:response.data});
                     await router.push("/"); 
-
-                }else{  
-                    setErrors("予期しないエラーが発生しました。")
                 }
-  
+           
             }catch(e) {
-                console.log('Error occurred!', e);
-                if(e.response && e.response.status === 500){    
-                    setErrors("不正なデータです。")
+                if( e.status === 400){
+                    setErrors("不正な入力値です")
+                
+                }else if(e.status === 500){    
+                    setErrors("登録に失敗しました")
+                   
                 }else{  
-                    setErrors(e.message || "予期しないエラーが発生しました。");
-                }};
-    };
-
-
+                    console.error(errors);
+                    setErrors(e.message || "予期しないエラーが発生しました。"); 
+                }}
+            
+            };
+           
 
     return (
         <div>   
         <h1>社員情報登録</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
-            {errors.message && <div className="error-msg">{errors}</div>}
+            {errors && <div className="error-msg">{errors}</div>}
             
             <InputEmployeeName register={register} errors={formErrors} />
             <InputAddress register={register} errors={formErrors} />

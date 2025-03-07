@@ -3,10 +3,10 @@ const InputPassword = ({ register, errors}) => {
         <div>
           <label htmlFor= "password">パスワード：</label>
           <input    
-              id= "password" type="text" className="input-password"  
+              id= "password" type="password" className="input-password"  
           {...register("password",  
           { required: "パスワードを入力してください。",   
-            minLength: {value: 8, message: "パスワードは8文字以上で入力してください。"}
+            pattern: {value: /^[A-Za-z0-9]{8,}$/ ,message: "パスワードは8文字以上の英数字で入力してください。"}
           })} />
 
           {errors.password && <div className="error-msg">{errors.password.message}</div>}

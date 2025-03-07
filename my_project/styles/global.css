@@ -26,10 +26,25 @@ body {
   }
   
   p {
-    font-size: 12px;
-    color: red;
     margin-top: 5px;
   }
+
+  .errors-text {
+    color: red;
+    font-size: 12px;
+  }
+
+  .error-msg {
+    color: red;
+    font-size: 12px;
+  }
+  
+
+  .details-text {
+    color: black;
+    font-size: 30px;
+  }
+  
   
   button {
     padding: 10px 15px;

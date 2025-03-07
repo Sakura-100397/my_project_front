@@ -1,12 +1,11 @@
 import axios from "axios";
 
-// レスポンスインターセプターでエラーハンドリングを行う
 axios.interceptors.response.use(
   function (response) {
     return response;
   },
   function (error) {
-    return Promise.reject(error.response?.data?.msg || '時間をおいてお試しください。');
+    return Promise.reject(error.response || '時間をおいてお試しください。');
   }
 );
 

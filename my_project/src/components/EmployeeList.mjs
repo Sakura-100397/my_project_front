@@ -26,7 +26,7 @@ const clickHandler = () => {
   if (!isLoading) {
     setIsLoading(true);
     router.push('/employees/register');
-  }
+  }n
 
   // router.push('/employees/register');
 };
@@ -40,7 +40,7 @@ useEffect(() => {
   <div className="container">
     <h1>▶社員情報一覧</h1>
     {error && <div className="error-msg text-center">{error}</div>}
-     {employees.length === 0 ? (
+     { !employees || employees.length === 0 ? (
     <p>表示する情報がありません</p>
   ) : (
     <ul>
